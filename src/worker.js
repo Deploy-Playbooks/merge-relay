@@ -8,7 +8,7 @@
  */
 
 export default {
-  async fetch(request, env) {
+  async fetch(request, env, ctx) {
     const url = new URL(request.url);
 
     if (request.method === "GET" && url.pathname === "/health") {
@@ -46,7 +46,7 @@ export default {
     const baseBranch = payload.repository.default_branch;
 
     // Process async — return 200 immediately so GitHub doesn't retry
-    env.ctx?.waitUntil(processQueue(env, owner, repo, baseBranch));
+    ctx.waitUntil(processQueue(env, owner, repo, baseBranch));
 
     return Response.json({ ok: true, queued: `${owner}/${repo}` });
   },
